@@ -1,0 +1,303 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpowcuv1nhf3v"]
+
+[ext_resource type="Script" uid="uid://bmtb7b81gighf" path="res://game_screen.gd" id="1_t5odh"]
+
+[node name="GameScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t5odh")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.22745098, 0.22745098, 0.22745098, 1)
+
+[node name="MainVBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 15.0
+offset_right = -10.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="HBoxContainer" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PlayerX_Info" type="PanelContainer" parent="MainVBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MainVBox/Header/PlayerX_Info"]
+layout_mode = 2
+
+[node name="PlayerX_Label" type="Label" parent="MainVBox/Header/PlayerX_Info/VBox"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "PLAYER X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerX_RP_Label" type="Label" parent="MainVBox/Header/PlayerX_Info/VBox"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "RP: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TurnIndicator" type="Label" parent="MainVBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Giliran: X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerO_Info" type="PanelContainer" parent="MainVBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MainVBox/Header/PlayerO_Info"]
+layout_mode = 2
+
+[node name="PlayerO_Label" type="Label" parent="MainVBox/Header/PlayerO_Info/VBox"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "PLAYER O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerO_RP_Label" type="Label" parent="MainVBox/Header/PlayerO_Info/VBox"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "RP: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Mulai!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BoardArea" type="CenterContainer" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GameBoard" type="GridContainer" parent="MainVBox/BoardArea"]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 5
+
+[node name="Cell_0_0" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_1" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_2" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_3" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_4" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_5" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_6" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_7" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_8" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_9" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_10" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_11" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_12" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_13" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_14" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_15" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_16" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_17" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_18" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_19" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_20" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_21" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_22" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_23" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="Cell_0_24" type="Button" parent="MainVBox/BoardArea/GameBoard"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+
+[node name="PowerUpBar" type="PanelContainer" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 11
+
+[node name="PowerUpGrid" type="GridContainer" parent="MainVBox/PowerUpBar"]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 3
+
+[node name="PowerUp_Shield" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Shield (2 RP)"
+
+[node name="PowerUp_Erase" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Erase (3 RP)"
+
+[node name="PowerUp_Golden" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Golden (3 RP)"
+
+[node name="PowerUp_Double" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Double (4 RP)"
+
+[node name="PowerUp_Swap" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Swap (5 RP"
+
+[node name="WinScreen" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="WinScreen"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="WinLabel" type="Label" parent="WinScreen/VBox"]
+layout_mode = 2
+text = "PLAYER X MENANG!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="RestartButton" type="Button" parent="WinScreen/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Main Lagi"
