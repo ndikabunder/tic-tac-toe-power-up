@@ -12,12 +12,12 @@ enum PowerUpState { NONE, ERASE, SHIELD, GOLDEN, DOUBLE_1, DOUBLE_2, SWAP_1, SWA
 # ===================================================================
 #   KONSTANTA GAME
 # ===================================================================
-# Biaya Power-up (sudah baik!)
+# Biaya baru yang lebih seimbang
 const SHIELD_COST = 2
-const ERASE_COST = 3
-const GOLDEN_COST = 3
-const DOUBLE_COST = 4
-const SWAP_COST = 5
+const GOLDEN_COST = 2  # <- Turun
+const ERASE_COST = 4  # <- Naik
+const SWAP_COST = 4  # <- Turun
+const DOUBLE_COST = 6  # <- Naik
 
 # Pengaturan Papan (sudah baik!)
 const BOARD_SIZE = 5
@@ -377,7 +377,8 @@ func reset_game():
 	# Reset variabel state
 	current_turn = Player.X
 	game_active = true
-	player_rp = {Player.X: 0, Player.O: 0}  # Reset dictionary RP
+	# Player X (P1) mulai dengan 1 RP, Player O (P2) mulai dengan 2 RP
+	player_rp = {Player.X: 1, Player.O: 2}
 	active_power_up = PowerUpState.NONE
 	shielded_cell = -1
 	swap_cell_1 = -1

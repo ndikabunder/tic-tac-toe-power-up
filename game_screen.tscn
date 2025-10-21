@@ -249,13 +249,13 @@ text = "Shield (2 RP)"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Erase (3 RP)"
+text = "Erase (2 RP)"
 
 [node name="PowerUp_Golden" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Golden (3 RP)"
+text = "Golden (4 RP)"
 
 [node name="PowerUp_Double" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
 layout_mode = 2
@@ -267,7 +267,7 @@ text = "Double (4 RP)"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Swap (5 RP"
+text = "Swap (6 RP)"
 
 [node name="WinScreen" type="PanelContainer" parent="."]
 visible = false
