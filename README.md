@@ -1,78 +1,79 @@
 # Tic-Tac-Toe Power-Up
 
-A strategic twist on the classic Tic-Tac-Toe game, featuring a 5x5 board and special power-ups that add depth and excitement to gameplay. Challenge yourself against an AI opponent or a friend in this enhanced version of the timeless game.
+<p align="center">
+  <strong>Sebuah sentuhan strategis pada permainan Tic-Tac-Toe klasik, kini dengan <i>power-up</i>!</strong>
+</p>
 
-## 🎮 Features
+<p align="center">
+  Tantang dirimu melawan AI atau bermain bersama teman di versi modern dari game abadi ini.
+</p>
 
-- **Enhanced Board**: Play on a 5x5 grid where you need 4 in a row to win
-- **Power-Up System**: Use special abilities to gain tactical advantages:
-  - **Shield**: Protect a cell from opponent moves (cost: 2 RP)
-  - **Erase**: Remove an opponent's marker (cost: 4 RP)
-  - **Golden Mark**: Place an untouchable marker (cost: 2 RP)
-  - **Double Move**: Place two markers in one turn (cost: 6 RP)
-  - **Swap**: Exchange positions of two markers on the board (cost: 4 RP)
-- **Resource Points (RP)**: Earn and spend points to use power-ups
-- **Smart AI**: Built-in computer opponent with strategic thinking
-- **Turn-Based Strategy**: Plan your moves and power-up usage carefully
+<!-- Disarankan untuk menambahkan screenshot atau GIF gameplay di sini -->
+<!-- <p align="center">
+  <img src="docs/gameplay.gif" alt="Gameplay Demo">
+</p> -->
 
-## 📋 How to Play
+## 🎮 Fitur Utama
 
-### Basic Rules
-- Players alternate turns placing their markers (X or O) on the 5x5 board
-- Win by getting 4 of your markers in a row (horizontally, vertically, or diagonally)
-- Earn 1 Resource Point (RP) at the end of each turn
+-   **Papan 5x5**: Susun 4 bidak secara berderet untuk menang.
+-   **Sistem Power-Up**: Gunakan kemampuan spesial untuk mendapatkan keuntungan taktis.
+-   **Resource Points (RP)**: Kumpulkan poin di setiap giliran untuk mengaktifkan power-up.
+-   **Lawan AI**: Uji strategimu melawan komputer yang cerdas.
+-   **Mode 2 Pemain**: Bermain bersama teman secara lokal.
 
-### Power-Up Usage
-1. Each power-up requires a certain amount of Resource Points (RP)
-2. Click a power-up button to activate it
-3. Follow the on-screen prompts to select the appropriate cells
-4. Pay the RP cost when the action is completed
+## ⚙️ Instalasi & Menjalankan
 
-### Special Markers
-- **Regular Markers**: "X" or "O" - placed normally
-- **Golden Markers**: "GX" or "GO" - cannot be erased by opponent
+1.  Unduh dan install **[Godot Engine](https://godotengine.org/)** (versi 4.x atau lebih baru).
+2.  Clone atau unduh repositori ini.
+3.  Buka proyek melalui Godot Engine.
+4.  Jalankan game dari editor dengan menekan tombol `Run Project` (F5).
 
-## ⚙️ Installation
+## 📋 Cara Bermain
 
-1. Install Godot Engine (version 4.x or later)
-2. Clone or download this repository
-3. Open the project in Godot
-4. Run the game from the editor or export for your platform
+### Tujuan Permainan
+Jadilah pemain pertama yang berhasil menyusun **4 bidak** (X atau O) secara berderet, baik secara horizontal, vertikal, maupun diagonal.
 
-## 🔧 Controls
+### Alur Dasar
+1.  Pemain bergiliran meletakkan bidak di papan 5x5.
+2.  Setiap akhir giliran, kamu akan mendapatkan **1 Resource Point (RP)**.
+3.  Gunakan RP yang terkumpul untuk mengaktifkan berbagai power-up.
 
-- **Left Click**: Place a marker or select cells
-- **Power-Up Buttons**: Activate special abilities
-- **Restart Button**: Start a new game
+### Sistem Power-Up
+Gunakan RP untuk mengaktifkan kemampuan spesial yang dapat mengubah alur permainan.
 
-## 🎯 Game Strategy
+| Power-Up | Biaya (RP) | Deskripsi |
+| :--- | :--- | :--- |
+| 🛡️ **Shield** | 2 | Melindungi satu petak agar tidak bisa diisi atau diubah oleh lawan. |
+| 💥 **Erase** | 4 | Menghapus satu bidak milik lawan dari papan. |
+| ✨ **Golden Mark** | 2 | Meletakkan bidak emas yang kebal terhadap power-up **Erase**. |
+| ⏩ **Double Move** | 6 | Meletakkan dua bidak biasa dalam satu giliran. |
+| 🔄 **Swap** | 4 | Menukar posisi dua bidak apa pun yang ada di papan. |
 
-- Manage your Resource Points wisely - don't spend them all at once
-- Balance between placing markers and using power-ups
-- Consider blocking your opponent's potential winning lines
-- Use the Shield power-up to protect key positions
-- The Swap power-up can create unexpected winning opportunities
+## 🔧 Kontrol
 
-## 🤖 AI Behavior
+-   **Klik Kiri**: Meletakkan bidak atau memilih petak untuk target power-up.
+-   **Tombol Power-Up**: Mengaktifkan kemampuan spesial.
+-   **Tombol Restart**: Memulai permainan baru.
 
-The computer opponent features:
-- Win detection - will prioritize winning moves
-- Blocking - will attempt to block your winning moves
-- Strategic placement - prefers moves near existing markers
-- Random thinking delay for a more human-like experience
+## 🎯 Tips Strategi
 
-## 🛠️ Technical Details
+-   **Kelola RP dengan bijak**: Jangan terburu-buru menghabiskan RP di awal permainan.
+-   **Seimbangkan**: Cari keseimbangan antara menyerang (menyusun bidak) dan menggunakan power-up.
+-   **Blokir Lawan**: Gunakan power-up untuk menghalangi lawan yang hampir menang.
+-   **Amankan Posisi**: Gunakan **Shield** atau **Golden Mark** untuk melindungi petak strategis.
+-   **Peluang Tak Terduga**: **Swap** bisa menjadi kunci untuk membalikkan keadaan atau menciptakan kemenangan instan.
 
-- Language: GDScript
-- Engine: Godot 4.x
-- Game Mode: Turn-based strategy
-- Board Size: 5x5
-- Win Condition: 4 in a row
+## 🛠️ Detail Teknis
 
-## 📜 License
+-   **Engine**: Godot 4.x
+-   **Bahasa**: GDScript
+-   **Ukuran Papan**: 5x5
+-   **Kondisi Menang**: 4 bidak berderet
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📜 Lisensi
 
-## 👨‍💻 Author
+Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
-Created by Ghibran as a Godot learning project.
+## 👨‍💻 Kredit
+
+Dibuat oleh **Ghibran** sebagai proyek untuk mempelajari Godot Engine.
