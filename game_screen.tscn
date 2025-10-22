@@ -301,3 +301,7 @@ autowrap_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Main Lagi"
+
+[node name="BotTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+one_shot = true

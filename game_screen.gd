@@ -23,11 +23,11 @@ const DOUBLE_COST = 6  # <- Naik
 const BOARD_SIZE = 5
 const WIN_STREAK = 4
 
+@export var is_bot_active = true  # Aktifkan/matikan bot dari Godot Editor
+
 # ===================================================================
 #   REFERENSI NODE (UI)
 # ===================================================================
-# Menggunakan @onready agar Godot bisa menemukan node ini saat game dimulai.
-# Ini jauh lebih aman dan efisien daripada menggunakan string "$..." berulang kali.
 @onready var status_label = $MainVBox/StatusLabel
 @onready var turn_indicator = $MainVBox/Header/TurnIndicator
 @onready var player_x_rp_label = $MainVBox/Header/PlayerX_Info/VBox/PlayerX_RP_Label
@@ -36,6 +36,7 @@ const WIN_STREAK = 4
 @onready var win_screen = $WinScreen
 @onready var win_label = $WinScreen/VBox/WinLabel
 @onready var restart_button = $WinScreen/VBox/RestartButton
+@onready var bot_timer = $BotTimer  # Referensi ke Node Timer yang baru Anda buat
 
 # Dictionary untuk menyimpan referensi tombol power-up
 @onready var powerup_buttons = {
@@ -45,6 +46,12 @@ const WIN_STREAK = 4
 	PowerUpState.DOUBLE_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Double,  # Kita pakai DOUBLE_1 sebagai ID
 	PowerUpState.SWAP_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Swap  # Kita pakai SWAP_1 sebagai ID
 }
+
+# ===================================================================
+#   VARIABEL STATE BOT
+# ===================================================================
+
+var is_bot_thinking = false
 
 # ===================================================================
 #   VARIABEL STATE GAME
@@ -102,6 +109,11 @@ func _ready():
 	_setup_board_signals()
 	_setup_powerup_signals()
 	restart_button.pressed.connect(reset_game)
+
+	# --- Hubungkan Timer Bot ---
+	bot_timer.timeout.connect(_on_bot_timer_timeout)
+	# -------------------------
+
 	reset_game()
 
 
@@ -135,6 +147,11 @@ func _setup_powerup_signals():
 
 # Fungsi ini sekarang jauh lebih bersih, hanya sebagai "router"
 func _on_cell_pressed(index):
+	# --- Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return  # Jangan lakukan apa-apa jika bot sedang mikir atau giliran bot
+	# ---------------------------
+
 	# 1. Cek Shield dulu (prioritas tertinggi)
 	if index == shielded_cell:
 		status_label.text = "Sel ini dilindungi Shield!"
@@ -301,6 +318,12 @@ func switch_turn(clear_shield = true):
 	# Ganti giliran
 	current_turn = get_opponent()
 
+	# --- Pemicu Bot ---
+	# Jika game aktif, bot diaktifkan, dan giliran O
+	if game_active and is_bot_active and current_turn == Player.O:
+		_execute_bot_turn()
+	# -------------------------
+
 
 # Fungsi Cek Menang (Logika sudah bagus, hanya diberi komentar)
 func check_for_win():
@@ -377,14 +400,21 @@ func reset_game():
 	# Reset variabel state
 	current_turn = Player.X
 	game_active = true
-	# Player X (P1) mulai dengan 1 RP, Player O (P2) mulai dengan 2 RP
+	# Player X (P1) mulai dengan 1 RP, Player O (P2) mulai dengan 2 RP (Balanced)
 	player_rp = {Player.X: 1, Player.O: 2}
 	active_power_up = PowerUpState.NONE
 	shielded_cell = -1
 	swap_cell_1 = -1
 
 	win_screen.visible = false
-	update_ui()  # Wajib panggil update_ui di akhir reset
+
+	# --- Reset Bot ---
+	is_bot_thinking = false
+	bot_timer.stop()
+	_set_board_interactive(true)  # Memastikan papan bisa diklik lagi
+	# -------------------------
+
+	update_ui()  # Panggil update_ui di akhir reset
 
 
 # ===================================================================
@@ -408,6 +438,11 @@ func update_ui():
 	# 3. Update Label Status (menggunakan Enum)
 	if game_active:
 		var status_text = "Giliran " + get_player_symbol_str(current_turn) + " untuk melangkah."
+
+		# Tambahan: Tampilkan status bot
+		if is_bot_thinking:
+			status_text = "Player O (Bot) sedang berpikir..."
+
 		match active_power_up:
 			PowerUpState.ERASE:
 				status_text = "Mode: HAPUS\nPilih sel LAWAN!"
@@ -455,6 +490,10 @@ func _can_activate_powerup(powerup_state):
 
 
 func _on_powerup_shield_pressed():
+	# --- Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return
+	# ---------------------------
 	if not _can_activate_powerup(PowerUpState.SHIELD):
 		return
 	if get_current_player_rp() < SHIELD_COST:
@@ -465,6 +504,10 @@ func _on_powerup_shield_pressed():
 
 
 func _on_powerup_erase_pressed():
+	# --- [DIPERBAIKI] Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return
+	# ---------------------------
 	if not _can_activate_powerup(PowerUpState.ERASE):
 		return
 	if get_current_player_rp() < ERASE_COST:
@@ -475,6 +518,10 @@ func _on_powerup_erase_pressed():
 
 
 func _on_powerup_golden_pressed():
+	# --- [DIPERBAIKI] Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return
+	# ---------------------------
 	if not _can_activate_powerup(PowerUpState.GOLDEN):
 		return
 	if get_current_player_rp() < GOLDEN_COST:
@@ -485,6 +532,11 @@ func _on_powerup_golden_pressed():
 
 
 func _on_powerup_double_pressed():
+	# --- [DIPERBAIKI] Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return
+	# ---------------------------
+
 	# Logika batal sedikit beda
 	if active_power_up == PowerUpState.DOUBLE_1 or active_power_up == PowerUpState.DOUBLE_2:
 		active_power_up = PowerUpState.NONE
@@ -507,6 +559,11 @@ func _on_powerup_double_pressed():
 
 
 func _on_powerup_swap_pressed():
+	# --- [DIPERBAIKI] Pengecekan Bot ---
+	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
+		return
+	# ---------------------------
+
 	# Logika batal juga beda
 	if active_power_up == PowerUpState.SWAP_1 or active_power_up == PowerUpState.SWAP_2:
 		active_power_up = PowerUpState.NONE
@@ -524,3 +581,150 @@ func _on_powerup_swap_pressed():
 	active_power_up = PowerUpState.SWAP_1
 	swap_cell_1 = -1
 	update_ui()
+
+
+# ===================================================================
+#   LOGIKA BOT (AI)
+# ===================================================================
+
+
+# Fungsi untuk menonaktifkan/mengaktifkan input pemain
+func _set_board_interactive(is_interactive):
+	# Nonaktifkan semua sel papan
+	for cell_button in game_board.get_children():
+		if cell_button is Button:
+			cell_button.disabled = not is_interactive
+
+	# Nonaktifkan semua tombol power-up
+	# Kita bisa nonaktifkan semua saat bot mikir
+	for button in powerup_buttons.values():
+		button.disabled = not is_interactive
+
+	# Saat mengaktifkan kembali, panggil update_ui()
+	# agar disabilitas tombol power-up sesuai RP
+	if is_interactive:
+		update_ui()
+
+
+# 1. Memulai giliran bot
+func _execute_bot_turn():
+	is_bot_thinking = true
+	_set_board_interactive(false)  # Matikan input human
+	status_label.text = "Player O (Bot) sedang berpikir..."
+
+	# Atur timer "berpikir" (0.75 - 1.5 detik) agar tidak instan
+	bot_timer.start(randf_range(0.75, 1.5))
+
+
+# 2. Logika inti AI (dipanggil setelah Timer selesai)
+func _on_bot_timer_timeout():
+	# Pengecekan keamanan
+	if not game_active or current_turn != Player.O:
+		is_bot_thinking = false
+		_set_board_interactive(true)
+		return
+
+	# PRIORITAS 1: Cari langkah untuk MENANG
+	var winning_move = _find_immediate_win(Player.O)
+	if winning_move != -1:
+		_handle_normal_click(winning_move)
+		is_bot_thinking = false
+		_set_board_interactive(true)
+		return
+
+	# PRIORITAS 2: Cari langkah untuk BLOKIR lawan
+	var blocking_move = _find_immediate_win(Player.X)
+	if blocking_move != -1:
+		_handle_normal_click(blocking_move)
+		is_bot_thinking = false
+		_set_board_interactive(true)
+		return
+
+	# PRIORITAS 3: (Logika Power-Up bisa ditambah di sini nanti)
+	# var bot_rp = player_rp[Player.O]
+	# if bot_rp >= ERASE_COST:
+	#     ... (logika erase) ...
+
+	# PRIORITAS 4: Lakukan langkah acak yang "baik"
+	var good_move = _find_good_random_move()
+	if good_move != -1:
+		_handle_normal_click(good_move)
+	else:
+		# Failsafe jika papan penuh (seharusnya tidak terjadi)
+		pass
+
+	is_bot_thinking = false
+	_set_board_interactive(true)  # Selesai berpikir, aktifkan lagi
+	# update_ui() akan dipanggil otomatis dari dalam _handle_normal_click
+
+
+# 3. HELPER AI: Mengecek semua sel kosong untuk kemenangan 1 langkah
+func _find_immediate_win(player_to_check):
+	# Kita perlu simbol "X" atau "O"
+	var symbol = get_player_symbol_str(player_to_check)
+
+	for i in range(board_state.size()):
+		# Cek hanya di sel yang kosong
+		if board_state[i] == "":
+			# 1. Coba letakkan bidak
+			board_state[i] = symbol
+
+			# 2. Cek apakah ini menang?
+			# Kita harus pura-pura giliran player tsb
+			var original_turn = current_turn
+			current_turn = player_to_check
+			var is_win = check_for_win()
+			current_turn = original_turn  # Kembalikan giliran
+
+			# 3. Hapus bidak (batalkan percobaan)
+			board_state[i] = ""
+
+			# 4. Jika tadi menang, ini langkahnya!
+			if is_win:
+				return i
+
+	return -1  # Tidak ada langkah menang instan
+
+
+# 4. HELPER AI: Mencari langkah acak di dekat bidak lain
+func _find_good_random_move():
+	var empty_cells = []
+	var good_cells = []  # Sel kosong yang tetanggaan sama bidak lain
+
+	for i in range(board_state.size()):
+		if board_state[i] == "":
+			empty_cells.append(i)
+
+			# Cek 8 tetangga
+			var is_adjacent = false
+			var r = i / BOARD_SIZE
+			var c = i % BOARD_SIZE
+
+			for dr in [-1, 0, 1]:
+				for dc in [-1, 0, 1]:
+					if dr == 0 and dc == 0:
+						continue  # Lewati diri sendiri
+
+					var nr = r + dr
+					var nc = c + dc
+
+					# Cek di dalam papan
+					if nr >= 0 and nr < BOARD_SIZE and nc >= 0 and nc < BOARD_SIZE:
+						var neighbor_index = nr * BOARD_SIZE + nc
+						if board_state[neighbor_index] != "":
+							is_adjacent = true
+							break
+				if is_adjacent:
+					break
+
+			if is_adjacent:
+				good_cells.append(i)
+
+	# Utamakan pilih dari sel yang "baik"
+	if not good_cells.is_empty():
+		return good_cells.pick_random()
+	# Jika tidak ada (misal di awal game), pilih dari semua sel kosong
+	elif not empty_cells.is_empty():
+		return empty_cells.pick_random()
+
+	return -1  # Papan penuh
