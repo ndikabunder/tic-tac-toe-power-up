@@ -23,8 +23,6 @@ const DOUBLE_COST = 6  # <- Naik
 const BOARD_SIZE = 5
 const WIN_STREAK = 4
 
-@export var is_bot_active = true  # Aktifkan/matikan bot dari Godot Editor
-
 # ===================================================================
 #   REFERENSI NODE (UI)
 # ===================================================================
@@ -43,14 +41,15 @@ const WIN_STREAK = 4
 	PowerUpState.SHIELD: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Shield,
 	PowerUpState.ERASE: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Erase,
 	PowerUpState.GOLDEN: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Golden,
-	PowerUpState.DOUBLE_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Double,  # Kita pakai DOUBLE_1 sebagai ID
-	PowerUpState.SWAP_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Swap  # Kita pakai SWAP_1 sebagai ID
+	PowerUpState.DOUBLE_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Double,  # DOUBLE_1 sebagai ID
+	PowerUpState.SWAP_1: $MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Swap  # SWAP_1 sebagai ID
 }
+
+@export var is_bot_active = true  # Aktifkan/matikan bot dari Godot Editor
 
 # ===================================================================
 #   VARIABEL STATE BOT
 # ===================================================================
-
 var is_bot_thinking = false
 
 # ===================================================================
@@ -481,7 +480,7 @@ func _can_activate_powerup(powerup_state):
 		update_ui()
 		return false
 	if active_power_up != PowerUpState.NONE:
-		status_label.text = "Selesaikan power-up %s dulu!" % str(active_power_up).to_upper()
+		status_label.text = "Selesaikan power-up " + str(active_power_up).to_upper() + " dulu!"
 		return false
 	return true
 
@@ -546,7 +545,7 @@ func _on_powerup_double_pressed():
 		return
 
 	if active_power_up != PowerUpState.NONE:
-		status_label.text = "Selesaikan power-up %s dulu!" % str(active_power_up).to_upper()
+		status_label.text = "Selesaikan power-up " + str(active_power_up).to_upper() + " dulu!"
 		return
 
 	if get_current_player_rp() < DOUBLE_COST:
@@ -572,7 +571,7 @@ func _on_powerup_swap_pressed():
 		return
 
 	if active_power_up != PowerUpState.NONE:
-		status_label.text = "Selesaikan power-up %s dulu!" % str(active_power_up).to_upper()
+		status_label.text = "Selesaikan power-up " + str(active_power_up).to_upper() + " dulu!"
 		return
 
 	if get_current_player_rp() < SWAP_COST:
@@ -613,7 +612,7 @@ func _execute_bot_turn():
 	status_label.text = "Player O (Bot) sedang berpikir..."
 
 	# Atur timer "berpikir" (0.75 - 1.5 detik) agar tidak instan
-	bot_timer.start(randf_range(0.75, 1.5))
+	bot_timer.start(randf() * 0.75 + 0.75)
 
 
 # 2. Logika inti AI (dipanggil setelah Timer selesai)
@@ -721,10 +720,10 @@ func _find_good_random_move():
 				good_cells.append(i)
 
 	# Utamakan pilih dari sel yang "baik"
-	if not good_cells.is_empty():
-		return good_cells.pick_random()
+	if good_cells.size() > 0:
+		return good_cells[randi() % good_cells.size()]
 	# Jika tidak ada (misal di awal game), pilih dari semua sel kosong
-	elif not empty_cells.is_empty():
-		return empty_cells.pick_random()
+	if empty_cells.size() > 0:
+		return empty_cells[randi() % empty_cells.size()]
 
 	return -1  # Papan penuh
