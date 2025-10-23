@@ -78,12 +78,21 @@ text = "RP: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TurnIndicator" type="Label" parent="MainVBox/Header"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="TurnIndicator" type="Label" parent="MainVBox/Header/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Giliran: X"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="InfoButton" type="Button" parent="MainVBox/Header/VBoxContainer"]
+layout_mode = 2
+text = "Info"
 
 [node name="PlayerO_Info" type="PanelContainer" parent="MainVBox/Header"]
 layout_mode = 2
@@ -309,7 +318,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 [node name="PowerUpBar" type="PanelContainer" parent="MainVBox"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
-size_flags_vertical = 11
+size_flags_vertical = 3
 
 [node name="PowerUpGrid" type="GridContainer" parent="MainVBox/PowerUpBar"]
 layout_mode = 2

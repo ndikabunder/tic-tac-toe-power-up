@@ -19,6 +19,12 @@ const ERASE_COST = 4  # <- Naik
 const SWAP_COST = 4  # <- Turun
 const DOUBLE_COST = 6  # <- Naik
 
+const PowerUpInfoPopup = preload("res://powerup_info_popup.tscn")
+
+# Warna untuk status tombol
+const NORMAL_COLOR = Color(1, 1, 1, 1)  # Putih
+const DARK_COLOR = Color(0.5, 0.5, 0.5, 1) # Abu-abu
+
 # Pengaturan Papan (sudah baik!)
 const BOARD_SIZE = 5
 const WIN_STREAK = 4
@@ -27,7 +33,7 @@ const WIN_STREAK = 4
 #   REFERENSI NODE (UI)
 # ===================================================================
 @onready var status_label = $MainVBox/StatusLabel
-@onready var turn_indicator = $MainVBox/Header/TurnIndicator
+@onready var turn_indicator = $MainVBox/Header/VBoxContainer/TurnIndicator
 @onready var player_x_rp_label = $MainVBox/Header/PlayerX_Info/VBox/PlayerX_RP_Label
 @onready var player_o_rp_label = $MainVBox/Header/PlayerO_Info/VBox/PlayerO_RP_Label
 @onready var game_board = $MainVBox/BoardArea/GameBoard
@@ -108,12 +114,18 @@ func _ready():
 	_setup_board_signals()
 	_setup_powerup_signals()
 	restart_button.pressed.connect(reset_game)
+	$MainVBox/Header/VBoxContainer/InfoButton.pressed.connect(_on_info_button_pressed)
 
 	# --- Hubungkan Timer Bot ---
 	bot_timer.timeout.connect(_on_bot_timer_timeout)
 	# -------------------------
 
 	reset_game()
+
+
+func _on_info_button_pressed():
+	var popup = PowerUpInfoPopup.instantiate()
+	add_child(popup)
 
 
 # ===================================================================
@@ -210,7 +222,7 @@ func _execute_erase(index):
 		board_state[index] = ""
 		modify_current_player_rp(-ERASE_COST)
 		active_power_up = PowerUpState.NONE
-		_check_game_over()  # Erase menggunakan giliran
+		_check_game_over(false)  # Erase menggunakan giliran
 	else:
 		status_label.text = "Target salah! Pilih sel milik LAWAN."
 
@@ -221,7 +233,7 @@ func _execute_shield(index):
 		modify_current_player_rp(-SHIELD_COST)
 		active_power_up = PowerUpState.NONE
 		# PENTING: Panggil switch_turn dengan 'false' agar shield tidak langsung hilang
-		switch_turn(false)
+		switch_turn(false, false)
 		update_ui()  # Panggil update_ui manual karena _check_game_over dilewati
 	else:
 		status_label.text = "Target salah! Pilih sel KOSONG."
@@ -232,7 +244,7 @@ func _execute_golden(index):
 		modify_current_player_rp(-GOLDEN_COST)
 		board_state[index] = "G" + get_player_symbol_str(current_turn)
 		active_power_up = PowerUpState.NONE
-		_check_game_over()  # Golden Mark menggunakan giliran
+		_check_game_over(false)  # Golden Mark menggunakan giliran
 	else:
 		status_label.text = "Target salah! Pilih sel KOSONG."
 
@@ -254,7 +266,7 @@ func _execute_double_2(index):
 	if board_state[index] == "":
 		board_state[index] = get_player_symbol_str(current_turn)
 		active_power_up = PowerUpState.NONE  # Selesai
-		_check_game_over()  # Selesai Double Move, gunakan giliran
+		_check_game_over(false)  # Selesai Double Move, gunakan giliran
 	else:
 		status_label.text = "Target salah! Pilih sel KOSONG."
 
@@ -282,7 +294,7 @@ func _execute_swap_2(index):
 			# Cek siapa yg menang pasca-swap (agak rumit, cara mudahnya cek giliran saat ini)
 			end_game(current_turn)
 		else:
-			switch_turn()  # Swap menggunakan giliran
+			switch_turn(true, false)  # Swap menggunakan giliran
 			update_ui()
 	else:
 		status_label.text = "Target salah! (Sel harus berisi & berbeda)"
@@ -294,7 +306,7 @@ func _execute_swap_2(index):
 
 
 # Fungsi baru untuk mengecek status akhir game
-func _check_game_over():
+func _check_game_over(award_rp = true):
 	if check_for_win():
 		end_game(current_turn)
 	elif not "" in board_state:
@@ -306,16 +318,17 @@ func _check_game_over():
 		else:
 			end_game(null) # RP sama, hasil tetap seri
 	else:
-		switch_turn()
+		switch_turn(true, award_rp)
 
 
 # Mengganti giliran (sudah di-update untuk bug Shield)
-func switch_turn(clear_shield = true):
+func switch_turn(clear_shield = true, award_rp = true):
 	if clear_shield:
 		shielded_cell = -1
 
 	# Tambah RP untuk pemain yang BARU SAJA selesai giliran
-	modify_current_player_rp(1)
+	if award_rp:
+		modify_current_player_rp(1)
 
 	# Ganti giliran
 	current_turn = get_opponent()
@@ -433,6 +446,23 @@ func get_player_color(player_symbol):
 	return Color.WHITE
 
 
+func _update_powerup_button_style(powerup_state, cost):
+	var button = powerup_buttons[powerup_state]
+	var icon = button.get_node("VBoxContainer/TextureRect")
+	var label = button.get_node("VBoxContainer/Label")
+	var current_rp = get_current_player_rp()
+	var can_player_interact = game_active and not is_bot_thinking and not (is_bot_active and current_turn == Player.O)
+
+	button.disabled = not can_player_interact or current_rp < cost
+
+	if button.disabled:
+		icon.modulate = DARK_COLOR
+		label.self_modulate = DARK_COLOR
+	else:
+		icon.modulate = NORMAL_COLOR
+		label.self_modulate = NORMAL_COLOR
+
+
 func update_ui():
 	# 1. Update Label Info (menggunakan @onready var dan dict RP)
 	player_x_rp_label.text = "RP: " + str(player_rp[Player.X])
@@ -484,13 +514,19 @@ func update_ui():
 				status_text = "Mode: SWAP (2/2)\nPilih sel KEDUA (berisi)!"
 		status_label.text = status_text
 
-	# 4. Update Tombol Power-Up (menggunakan helper get_current_player_rp)
-	var current_rp = get_current_player_rp()
-	powerup_buttons[PowerUpState.SHIELD].disabled = not can_player_interact or current_rp < SHIELD_COST
-	powerup_buttons[PowerUpState.ERASE].disabled = not can_player_interact or current_rp < ERASE_COST
-	powerup_buttons[PowerUpState.GOLDEN].disabled = not can_player_interact or current_rp < GOLDEN_COST
-	powerup_buttons[PowerUpState.DOUBLE_1].disabled = not can_player_interact or current_rp < DOUBLE_COST
-	powerup_buttons[PowerUpState.SWAP_1].disabled = not can_player_interact or current_rp < SWAP_COST
+	# 4. Update Tombol Power-Up
+	_update_powerup_button_style(PowerUpState.SHIELD, SHIELD_COST)
+	_update_powerup_button_style(PowerUpState.ERASE, ERASE_COST)
+	_update_powerup_button_style(PowerUpState.GOLDEN, GOLDEN_COST)
+	_update_powerup_button_style(PowerUpState.DOUBLE_1, DOUBLE_COST)
+	_update_powerup_button_style(PowerUpState.SWAP_1, SWAP_COST)
+
+	# 5. Update Teks Tombol Power-Up
+	powerup_buttons[PowerUpState.SHIELD].get_node("VBoxContainer/Label").text = "Shield\n(%d RP)" % SHIELD_COST
+	powerup_buttons[PowerUpState.ERASE].get_node("VBoxContainer/Label").text = "Erase\n(%d RP)" % ERASE_COST
+	powerup_buttons[PowerUpState.GOLDEN].get_node("VBoxContainer/Label").text = "Golden\n(%d RP)" % GOLDEN_COST
+	powerup_buttons[PowerUpState.DOUBLE_1].get_node("VBoxContainer/Label").text = "Double\n(%d RP)" % DOUBLE_COST
+	powerup_buttons[PowerUpState.SWAP_1].get_node("VBoxContainer/Label").text = "Swap\n(%d RP)" % SWAP_COST
 
 
 # ===================================================================

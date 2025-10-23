@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8wqj1v2wua7k"]
+
+[ext_resource type="Script" path="res://powerup_info_popup.gd" id="1_5y4g7"]
+
+[node name="PowerUpInfoPopup" type="Panel"]
+process_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5y4g7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Informasi Power-Up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShieldLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Shield: Melindungi satu sel kosong dari bidak lawan selama satu giliran."
+autowrap_mode = 2
+
+[node name="EraseLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Erase: Menghapus satu bidak lawan dari papan."
+autowrap_mode = 2
+
+[node name="GoldenLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Golden Mark: Menempatkan bidak emas yang tidak bisa dihapus oleh Erase."
+autowrap_mode = 2
+
+[node name="DoubleLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Double Move: Meletakkan dua bidak dalam satu giliran."
+autowrap_mode = 2
+
+[node name="SwapLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Swap: Menukar posisi dua bidak di papan."
+autowrap_mode = 2
+
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Tutup"
