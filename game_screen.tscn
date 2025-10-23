@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://bmtb7b81gighf" path="res://game_screen.gd" id="1_t5odh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwjjp"]
-bg_color = Color(0.09305953, 0.09305953, 0.09305953, 0.9882353)
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.98823529)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_norob"]
-bg_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.98823529)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yla3h"]
-bg_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.98823529)
 
 [node name="GameScreen" type="Control"]
 layout_mode = 3
@@ -130,150 +130,175 @@ custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_1" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_2" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_3" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_4" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_5" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_6" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_7" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_8" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_9" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_10" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_11" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_12" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_13" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_14" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_15" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_16" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_17" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_18" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_19" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_20" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_21" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_22" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_23" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="Cell_0_24" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(60, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="PowerUpBar" type="PanelContainer" parent="MainVBox"]
 layout_mode = 2
@@ -357,6 +382,8 @@ autowrap_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Main Lagi"
+theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
 
 [node name="BotTimer" type="Timer" parent="."]
 unique_name_in_owner = true

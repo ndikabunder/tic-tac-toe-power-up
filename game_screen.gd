@@ -419,6 +419,13 @@ func reset_game():
 # ===================================================================
 #   FUNGSI UPDATE UI (Tampilan)
 # ===================================================================
+func get_player_color(player_symbol):
+	if player_symbol == "X":
+		return Color.from_string("#7e7d7d", Color.WHITE)
+	elif player_symbol == "O":
+		return Color.from_string("#7ec7fe", Color.WHITE)
+	return Color.WHITE
+
 func update_ui():
 	# 1. Update Label Info (menggunakan @onready var dan dict RP)
 	player_x_rp_label.text = "RP: " + str(player_rp[Player.X])
@@ -429,7 +436,13 @@ func update_ui():
 	var cell_index = 0
 	for cell_button in game_board.get_children():
 		if cell_button is Button:
-			cell_button.text = board_state[cell_index]
+			var symbol = board_state[cell_index]
+			cell_button.text = symbol
+			
+			var base_symbol = get_base_symbol(symbol)
+			var color = get_player_color(base_symbol)
+			cell_button.modulate = color
+			
 			if cell_index == shielded_cell:
 				cell_button.text = "[S]"  # Tanda Shield
 			cell_index += 1
