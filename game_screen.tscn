@@ -429,7 +429,7 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
 text = "Double
-2RP"
+4RP"
 horizontal_alignment = 1
 vertical_alignment = 1
 

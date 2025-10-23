@@ -146,10 +146,7 @@ func _setup_powerup_signals():
 
 # Fungsi ini sekarang jauh lebih bersih, hanya sebagai "router"
 func _on_cell_pressed(index):
-	# --- Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return  # Jangan lakukan apa-apa jika bot sedang mikir atau giliran bot
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 
 	# 1. Cek Shield dulu (prioritas tertinggi)
 	if index == shielded_cell:
@@ -301,7 +298,13 @@ func _check_game_over():
 	if check_for_win():
 		end_game(current_turn)
 	elif not "" in board_state:
-		end_game(null)  # null = Seri
+		# Papan penuh, tentukan pemenang berdasarkan RP
+		if player_rp[Player.X] > player_rp[Player.O]:
+			end_game(Player.X, true) # Player X menang via RP
+		elif player_rp[Player.O] > player_rp[Player.X]:
+			end_game(Player.O, true) # Player O menang via RP
+		else:
+			end_game(null) # RP sama, hasil tetap seri
 	else:
 		switch_turn()
 
@@ -379,14 +382,17 @@ func check_for_win():
 
 
 # Mengakhiri permainan
-func end_game(winner_player):  # Menggunakan enum Player, 'null' jika seri
+func end_game(winner_player, win_by_rp = false):  # Menggunakan enum Player, 'null' jika seri
 	game_active = false
 	win_screen.visible = true
 
 	if winner_player == null:
 		win_label.text = "PERMAINAN SERI!"
 	else:
-		win_label.text = "PLAYER " + get_player_symbol_str(winner_player) + " MENANG!"
+		var win_text = "PLAYER " + get_player_symbol_str(winner_player) + " MENANG!"
+		if win_by_rp:
+			win_text = "PLAYER " + get_player_symbol_str(winner_player) + " MENANG!\n(RP Terbanyak)"
+		win_label.text = win_text
 
 
 # Me-reset game ke status awal
@@ -433,10 +439,14 @@ func update_ui():
 	player_o_rp_label.text = "RP: " + str(player_rp[Player.O])
 	turn_indicator.text = "Giliran: " + get_player_symbol_str(current_turn)
 
+	# Tentukan apakah pemain bisa berinteraksi
+	var can_player_interact = game_active and not is_bot_thinking and not (is_bot_active and current_turn == Player.O)
+
 	# 2. Update Tampilan Papan (25 Tombol)
 	var cell_index = 0
 	for cell_button in game_board.get_children():
 		if cell_button is Button:
+			cell_button.disabled = not can_player_interact
 			cell_button.text = board_state[cell_index]
 			var symbol = board_state[cell_index]
 			cell_button.text = symbol
@@ -476,11 +486,11 @@ func update_ui():
 
 	# 4. Update Tombol Power-Up (menggunakan helper get_current_player_rp)
 	var current_rp = get_current_player_rp()
-	powerup_buttons[PowerUpState.SHIELD].disabled = current_rp < SHIELD_COST
-	powerup_buttons[PowerUpState.ERASE].disabled = current_rp < ERASE_COST
-	powerup_buttons[PowerUpState.GOLDEN].disabled = current_rp < GOLDEN_COST
-	powerup_buttons[PowerUpState.DOUBLE_1].disabled = current_rp < DOUBLE_COST
-	powerup_buttons[PowerUpState.SWAP_1].disabled = current_rp < SWAP_COST
+	powerup_buttons[PowerUpState.SHIELD].disabled = not can_player_interact or current_rp < SHIELD_COST
+	powerup_buttons[PowerUpState.ERASE].disabled = not can_player_interact or current_rp < ERASE_COST
+	powerup_buttons[PowerUpState.GOLDEN].disabled = not can_player_interact or current_rp < GOLDEN_COST
+	powerup_buttons[PowerUpState.DOUBLE_1].disabled = not can_player_interact or current_rp < DOUBLE_COST
+	powerup_buttons[PowerUpState.SWAP_1].disabled = not can_player_interact or current_rp < SWAP_COST
 
 
 # ===================================================================
@@ -504,10 +514,7 @@ func _can_activate_powerup(powerup_state):
 
 
 func _on_powerup_shield_pressed():
-	# --- Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 	if not _can_activate_powerup(PowerUpState.SHIELD):
 		return
 	if get_current_player_rp() < SHIELD_COST:
@@ -518,10 +525,7 @@ func _on_powerup_shield_pressed():
 
 
 func _on_powerup_erase_pressed():
-	# --- [DIPERBAIKI] Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 	if not _can_activate_powerup(PowerUpState.ERASE):
 		return
 	if get_current_player_rp() < ERASE_COST:
@@ -532,10 +536,7 @@ func _on_powerup_erase_pressed():
 
 
 func _on_powerup_golden_pressed():
-	# --- [DIPERBAIKI] Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 	if not _can_activate_powerup(PowerUpState.GOLDEN):
 		return
 	if get_current_player_rp() < GOLDEN_COST:
@@ -546,10 +547,7 @@ func _on_powerup_golden_pressed():
 
 
 func _on_powerup_double_pressed():
-	# --- [DIPERBAIKI] Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 
 	# Logika batal sedikit beda
 	if active_power_up == PowerUpState.DOUBLE_1 or active_power_up == PowerUpState.DOUBLE_2:
@@ -573,10 +571,7 @@ func _on_powerup_double_pressed():
 
 
 func _on_powerup_swap_pressed():
-	# --- [DIPERBAIKI] Pengecekan Bot ---
-	if is_bot_thinking or (is_bot_active and current_turn == Player.O):
-		return
-	# ---------------------------
+	# Pengecekan input sekarang ditangani dengan menonaktifkan tombol di update_ui()
 
 	# Logika batal juga beda
 	if active_power_up == PowerUpState.SWAP_1 or active_power_up == PowerUpState.SWAP_2:
@@ -604,20 +599,11 @@ func _on_powerup_swap_pressed():
 
 # Fungsi untuk menonaktifkan/mengaktifkan input pemain
 func _set_board_interactive(is_interactive):
-	# Nonaktifkan semua sel papan
-	for cell_button in game_board.get_children():
-		if cell_button is Button:
-			cell_button.disabled = not is_interactive
-
-	# Nonaktifkan semua tombol power-up
-	# Kita bisa nonaktifkan semua saat bot mikir
-	for button in powerup_buttons.values():
-		button.disabled = not is_interactive
-
-	# Saat mengaktifkan kembali, panggil update_ui()
-	# agar disabilitas tombol power-up sesuai RP
-	if is_interactive:
-		update_ui()
+	# Logika disabilitas tombol sekarang terpusat di update_ui()
+	# Fungsi ini sekarang hanya pemicu untuk update.
+	# Argumen is_interactive secara implisit digunakan di dalam update_ui
+	# melalui variabel state seperti is_bot_thinking dan current_turn.
+	update_ui()
 
 
 # 1. Memulai giliran bot
@@ -706,7 +692,7 @@ func _find_immediate_win(player_to_check):
 
 # 4. HELPER AI: Mencari langkah terbaik dengan evaluasi papan
 func _find_best_move(player):
-	var best_score = -1
+	var best_score = -10000  # Inisialisasi dengan skor yang sangat rendah
 	var best_move = -1
 	var empty_cells = []
 
@@ -755,7 +741,7 @@ func _evaluate_line(start_index, player):
 		var is_blocked = false
 
 		for i in range(WIN_STREAK):
-			var r = (start_index / BOARD_SIZE) + dir[0] * i
+			var r = int(start_index / BOARD_SIZE) + dir[0] * i
 			var c = (start_index % BOARD_SIZE) + dir[1] * i
 
 			if r < 0 or r >= BOARD_SIZE or c < 0 or c >= BOARD_SIZE:
@@ -797,6 +783,7 @@ func _bot_try_use_powerup():
 		if erase_target != -1:
 			# Pastikan target bukan Golden Mark
 			if "G" not in board_state[erase_target]:
+				status_label.text = "Bot menggunakan power-up ERASE!"
 				print("BOT: Menggunakan ERASE pada sel %d" % erase_target)
 				_execute_erase(erase_target)
 				# Setelah erase, giliran langsung berganti.
@@ -810,14 +797,10 @@ func _bot_try_use_powerup():
 		if shield_target != -1:
 			# Pastikan selnya kosong
 			if board_state[shield_target] == "":
+				status_label.text = "Bot menggunakan power-up SHIELD!"
 				print("BOT: Menggunakan SHIELD pada sel %d" % shield_target)
 				_execute_shield(shield_target)
-				# Shield tidak mengakhiri giliran, jadi bot harus melangkah lagi.
-				# Kita bisa panggil _execute_bot_turn() lagi atau cukup tempatkan bidak.
-				# Untuk simpelnya, kita coba tempatkan bidak di tempat lain.
-				var move = _find_best_move(Player.O)
-				if move != -1:
-					_handle_normal_click(move)
+				# Menggunakan Shield mengakhiri giliran Bot.
 				return true # Aksi berhasil
 
 	# Strategi 3: Gunakan GOLDEN untuk mengamankan kemenangan
@@ -826,6 +809,7 @@ func _bot_try_use_powerup():
 		var golden_target = _find_line_to_complete(Player.O, WIN_STREAK - 1)
 		if golden_target != -1:
 			if board_state[golden_target] == "":
+				status_label.text = "Bot menggunakan power-up GOLDEN!"
 				print("BOT: Menggunakan GOLDEN pada sel %d" % golden_target)
 				_execute_golden(golden_target)
 				return true # Aksi berhasil
@@ -854,14 +838,15 @@ func _find_line_to_break(player, streak_needed):
 				if is_threatening:
 					board_state[i] = original_symbol # Kembalikan
 					# Pilih salah satu bidak dari baris tersebut untuk dihapus
-					return cells[randi() % cells.size()]
+					if not cells.is_empty():
+						return cells[randi() % cells.size()]
 
 			board_state[i] = original_symbol # Kembalikan
 	return -1
 
 # 9. HELPER AI: Menganalisa ancaman pada satu titik
 func _analyze_threat_at(index, player, streak_needed):
-	var r = index / BOARD_SIZE
+	var r = int(index / BOARD_SIZE)
 	var c = index % BOARD_SIZE
 	var player_symbol = get_player_symbol_str(player)
 
