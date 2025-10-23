@@ -426,6 +426,7 @@ func get_player_color(player_symbol):
 		return Color.from_string("#7ec7fe", Color.WHITE)
 	return Color.WHITE
 
+
 func update_ui():
 	# 1. Update Label Info (menggunakan @onready var dan dict RP)
 	player_x_rp_label.text = "RP: " + str(player_rp[Player.X])
@@ -436,13 +437,14 @@ func update_ui():
 	var cell_index = 0
 	for cell_button in game_board.get_children():
 		if cell_button is Button:
+			cell_button.text = board_state[cell_index]
 			var symbol = board_state[cell_index]
 			cell_button.text = symbol
-			
+
 			var base_symbol = get_base_symbol(symbol)
 			var color = get_player_color(base_symbol)
 			cell_button.modulate = color
-			
+
 			if cell_index == shielded_cell:
 				cell_button.text = "[S]"  # Tanda Shield
 			cell_index += 1
@@ -652,15 +654,19 @@ func _on_bot_timer_timeout():
 		_set_board_interactive(true)
 		return
 
-	# PRIORITAS 3: (Logika Power-Up bisa ditambah di sini nanti)
-	# var bot_rp = player_rp[Player.O]
-	# if bot_rp >= ERASE_COST:
-	#     ... (logika erase) ...
+	# PRIORITAS 3: Gunakan Power-Up jika memungkinkan dan menguntungkan
+	if _bot_try_use_powerup():
+		# Jika bot berhasil menggunakan power-up, power-up itu akan menangani
+		# sisa gilirannya (misalnya, _check_game_over atau switch_turn).
+		# Jadi, kita bisa keluar dari fungsi ini lebih awal.
+		is_bot_thinking = false
+		_set_board_interactive(true)
+		return
 
-	# PRIORITAS 4: Lakukan langkah acak yang "baik"
-	var good_move = _find_good_random_move()
-	if good_move != -1:
-		_handle_normal_click(good_move)
+	# PRIORITAS 4: Lakukan langkah terbaik berdasarkan evaluasi
+	var best_move = _find_best_move(Player.O)
+	if best_move != -1:
+		_handle_normal_click(best_move)
 	else:
 		# Failsafe jika papan penuh (seharusnya tidak terjadi)
 		pass
@@ -698,45 +704,202 @@ func _find_immediate_win(player_to_check):
 	return -1  # Tidak ada langkah menang instan
 
 
-# 4. HELPER AI: Mencari langkah acak di dekat bidak lain
-func _find_good_random_move():
+# 4. HELPER AI: Mencari langkah terbaik dengan evaluasi papan
+func _find_best_move(player):
+	var best_score = -1
+	var best_move = -1
 	var empty_cells = []
-	var good_cells = []  # Sel kosong yang tetanggaan sama bidak lain
 
 	for i in range(board_state.size()):
 		if board_state[i] == "":
 			empty_cells.append(i)
 
-			# Cek 8 tetangga
-			var is_adjacent = false
-			var r = i / BOARD_SIZE
-			var c = i % BOARD_SIZE
+	# Jika papan kosong, pilih tengah
+	if empty_cells.size() == BOARD_SIZE * BOARD_SIZE:
+		return int(BOARD_SIZE * BOARD_SIZE / 2)
 
-			for dr in [-1, 0, 1]:
-				for dc in [-1, 0, 1]:
-					if dr == 0 and dc == 0:
-						continue  # Lewati diri sendiri
+	for i in empty_cells:
+		# Coba letakkan bidak bot
+		board_state[i] = get_player_symbol_str(player)
+		var score = _evaluate_board(player)
+		board_state[i] = "" # Hapus bidak
 
-					var nr = r + dr
-					var nc = c + dc
+		if score > best_score:
+			best_score = score
+			best_move = i
 
-					# Cek di dalam papan
-					if nr >= 0 and nr < BOARD_SIZE and nc >= 0 and nc < BOARD_SIZE:
-						var neighbor_index = nr * BOARD_SIZE + nc
-						if board_state[neighbor_index] != "":
-							is_adjacent = true
-							break
-				if is_adjacent:
-					break
+	return best_move
 
-			if is_adjacent:
-				good_cells.append(i)
 
-	# Utamakan pilih dari sel yang "baik"
-	if good_cells.size() > 0:
-		return good_cells[randi() % good_cells.size()]
-	# Jika tidak ada (misal di awal game), pilih dari semua sel kosong
-	if empty_cells.size() > 0:
-		return empty_cells[randi() % empty_cells.size()]
+# 5. HELPER AI: Mengevaluasi skor keseluruhan papan untuk seorang pemain
+func _evaluate_board(player):
+	var score = 0
+	var opponent = get_opponent() if player == current_turn else current_turn
 
-	return -1  # Papan penuh
+	# Cek setiap sel untuk potensi
+	for i in range(board_state.size()):
+		score += _evaluate_line(i, player) # Skor untuk membuat baris
+		score -= _evaluate_line(i, opponent) # Skor untuk memblokir lawan
+
+	return score
+
+
+# 6. HELPER AI: Mengevaluasi skor untuk satu baris (horizontal, vertikal, diagonal)
+func _evaluate_line(start_index, player):
+	var score = 0
+	var directions = [[0, 1], [1, 0], [1, 1], [1, -1]]
+	
+	for dir in directions:
+		var own_pieces = 0
+		var empty_cells = 0
+		var is_blocked = false
+
+		for i in range(WIN_STREAK):
+			var r = (start_index / BOARD_SIZE) + dir[0] * i
+			var c = (start_index % BOARD_SIZE) + dir[1] * i
+
+			if r < 0 or r >= BOARD_SIZE or c < 0 or c >= BOARD_SIZE:
+				is_blocked = true
+				break
+
+			var index = r * BOARD_SIZE + c
+			var symbol = get_base_symbol(board_state[index])
+			var player_symbol = get_player_symbol_str(player)
+
+			if symbol == player_symbol:
+				own_pieces += 1
+			elif symbol == "":
+				empty_cells += 1
+			else:
+				is_blocked = true
+				break
+		
+		if not is_blocked:
+			if own_pieces == WIN_STREAK - 1 and empty_cells == 1:
+				score += 100 # Potensi menang
+			elif own_pieces == WIN_STREAK - 2 and empty_cells == 2:
+				score += 10 # Potensi baris panjang
+			elif own_pieces == WIN_STREAK - 3 and empty_cells == 3:
+				score += 1 # Sedikit potensi
+
+	return score
+
+
+# 7. HELPER AI: Coba gunakan power-up
+func _bot_try_use_powerup():
+	var bot_rp = player_rp[Player.O]
+	var opponent_symbol = get_player_symbol_str(Player.X)
+
+	# Strategi 1: Gunakan ERASE untuk menghancurkan kesempatan menang lawan
+	if bot_rp >= ERASE_COST:
+		# Cari baris milik lawan yang punya 3 bidak dan 1 kosong (potensi menang)
+		var erase_target = _find_line_to_break(Player.X, WIN_STREAK - 1)
+		if erase_target != -1:
+			# Pastikan target bukan Golden Mark
+			if "G" not in board_state[erase_target]:
+				print("BOT: Menggunakan ERASE pada sel %d" % erase_target)
+				_execute_erase(erase_target)
+				# Setelah erase, giliran langsung berganti.
+				return true # Aksi berhasil dilakukan
+
+	# Strategi 2: Gunakan SHIELD untuk melindungi sel krusial
+	# (Misal: untuk melindungi baris 3-bidak milik bot)
+	if bot_rp >= SHIELD_COST:
+		# Cari sel kosong yang jika diisi BOT akan membuat 3-in-a-row
+		var shield_target = _find_line_to_complete(Player.O, WIN_STREAK - 1)
+		if shield_target != -1:
+			# Pastikan selnya kosong
+			if board_state[shield_target] == "":
+				print("BOT: Menggunakan SHIELD pada sel %d" % shield_target)
+				_execute_shield(shield_target)
+				# Shield tidak mengakhiri giliran, jadi bot harus melangkah lagi.
+				# Kita bisa panggil _execute_bot_turn() lagi atau cukup tempatkan bidak.
+				# Untuk simpelnya, kita coba tempatkan bidak di tempat lain.
+				var move = _find_best_move(Player.O)
+				if move != -1:
+					_handle_normal_click(move)
+				return true # Aksi berhasil
+
+	# Strategi 3: Gunakan GOLDEN untuk mengamankan kemenangan
+	if bot_rp >= GOLDEN_COST:
+		# Cari sel kosong yang jika diisi akan membuat 3-in-a-row
+		var golden_target = _find_line_to_complete(Player.O, WIN_STREAK - 1)
+		if golden_target != -1:
+			if board_state[golden_target] == "":
+				print("BOT: Menggunakan GOLDEN pada sel %d" % golden_target)
+				_execute_golden(golden_target)
+				return true # Aksi berhasil
+
+	return false # Tidak ada power-up yang digunakan
+
+
+# 8. HELPER AI: Cari baris yang bisa di-break dengan ERASE
+func _find_line_to_break(player, streak_needed):
+	var player_symbol = get_player_symbol_str(player)
+	for i in range(board_state.size()):
+		# Cek hanya pada sel yang dimiliki lawan
+		if get_base_symbol(board_state[i]) == player_symbol:
+			# Simulasikan penghapusan
+			var original_symbol = board_state[i]
+			board_state[i] = ""
+
+			# Cek apakah dengan menghapus ini, potensi menang lawan hilang?
+			# Cara simpel: cek apakah lawan TIDAK BISA menang di giliran berikutnya
+			if _find_immediate_win(player) == -1:
+				board_state[i] = original_symbol # Kembalikan
+				# Logika lebih cerdas: cari baris panjang
+				var result = _analyze_threat_at(i, player, streak_needed)
+				var is_threatening = result[0]
+				var cells = result[1]
+				if is_threatening:
+					board_state[i] = original_symbol # Kembalikan
+					# Pilih salah satu bidak dari baris tersebut untuk dihapus
+					return cells[randi() % cells.size()]
+
+			board_state[i] = original_symbol # Kembalikan
+	return -1
+
+# 9. HELPER AI: Menganalisa ancaman pada satu titik
+func _analyze_threat_at(index, player, streak_needed):
+	var r = index / BOARD_SIZE
+	var c = index % BOARD_SIZE
+	var player_symbol = get_player_symbol_str(player)
+
+	var directions = [[0, 1], [1, 0], [1, 1], [1, -1]] # Horizontal, Vertikal, Diagonal
+	for dir in directions:
+		var line_cells = []
+		var empty_spots = []
+		var count = 0
+		# Cek ke dua arah dari titik
+		for step in range(-streak_needed + 1, streak_needed):
+			var new_r = r + dir[0] * step
+			var new_c = c + dir[1] * step
+			if new_r >= 0 and new_r < BOARD_SIZE and new_c >= 0 and new_c < BOARD_SIZE:
+				var new_idx = new_r * BOARD_SIZE + new_c
+				var symbol = get_base_symbol(board_state[new_idx])
+				if symbol == player_symbol:
+					count += 1
+					line_cells.append(new_idx)
+				elif board_state[new_idx] == "":
+					empty_spots.append(new_idx)
+		
+		# Jika ada baris dengan panjang `streak_needed` dan ada ruang kosong untuk menang
+		if count >= streak_needed and empty_spots.size() >= (WIN_STREAK - streak_needed):
+			return [true, line_cells]
+			
+	return [false, []]
+
+
+# 10. HELPER AI: Cari sel kosong untuk melengkapi baris
+func _find_line_to_complete(player, streak_needed):
+	for i in range(board_state.size()):
+		if board_state[i] == "":
+			# Coba isi
+			board_state[i] = get_player_symbol_str(player)
+			# Cek apakah ini menciptakan baris dengan `streak_needed`
+			var result = _analyze_threat_at(i, player, streak_needed)
+			var is_potential = result[0]
+			board_state[i] = "" # Kembalikan
+			if is_potential:
+				return i # Kembalikan sel kosongnya
+	return -1
