@@ -20,6 +20,8 @@ const SWAP_COST = 4  # <- Turun
 const DOUBLE_COST = 6  # <- Naik
 
 const PowerUpInfoPopup = preload("res://powerup_info_popup.tscn")
+const TEXTURE_X = preload("res://pedang.png")
+const TEXTURE_O = preload("res://perisai.png")
 
 # Warna untuk status tombol
 const NORMAL_COLOR = Color(1, 1, 1, 1)  # Putih
@@ -456,11 +458,9 @@ func _update_powerup_button_style(powerup_state, cost):
 	button.disabled = not can_player_interact or current_rp < cost
 
 	if button.disabled:
-		icon.modulate = DARK_COLOR
-		label.self_modulate = DARK_COLOR
+		button.self_modulate = DARK_COLOR
 	else:
-		icon.modulate = NORMAL_COLOR
-		label.self_modulate = NORMAL_COLOR
+		button.self_modulate = NORMAL_COLOR
 
 
 func update_ui():
@@ -477,16 +477,25 @@ func update_ui():
 	for cell_button in game_board.get_children():
 		if cell_button is Button:
 			cell_button.disabled = not can_player_interact
-			cell_button.text = board_state[cell_index]
+			# Hapus teks, kita akan pakai icon
+			cell_button.text = ""
 			var symbol = board_state[cell_index]
-			cell_button.text = symbol
 
+			# Set icon berdasarkan simbol
 			var base_symbol = get_base_symbol(symbol)
+			if base_symbol == "X":
+				cell_button.icon = TEXTURE_X
+			elif base_symbol == "O":
+				cell_button.icon = TEXTURE_O
+			else:
+				cell_button.icon = null # Kosongkan icon jika tidak ada simbol
+
+			# Warna modulasi tetap bisa dipakai untuk efek "disabled" atau lainnya
 			var color = get_player_color(base_symbol)
 			cell_button.modulate = color
 
 			if cell_index == shielded_cell:
-				cell_button.text = "[S]"  # Tanda Shield
+				cell_button.text = "[S]"  # Tanda Shield bisa tetap pakai teks
 			cell_index += 1
 
 	# 3. Update Label Status (menggunakan Enum)

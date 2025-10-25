@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpowcuv1nhf3v"]
+[gd_scene load_steps=11 format=3 uid="uid://cpowcuv1nhf3v"]
 
 [ext_resource type="Script" uid="uid://bmtb7b81gighf" path="res://game_screen.gd" id="1_t5odh"]
 [ext_resource type="Texture2D" uid="uid://cwiteg0x7a63n" path="res://double.png" id="2_double_png"]
@@ -6,15 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://d0oinwxij2cc8" path="res://golden.png" id="4_golden_png"]
 [ext_resource type="Texture2D" uid="uid://cgmc6uwykokim" path="res://erase.png" id="5_erase_png"]
 [ext_resource type="Texture2D" uid="uid://teskhakfelk0" path="res://shield.png" id="6_shield_png"]
+[ext_resource type="Texture2D" uid="uid://de7jlut56fpmr" path="res://background.png" id="7_background_png"]
+[ext_resource type="Texture2D" uid="uid://bmd56jk0d312l" path="res://bingkai.png" id="8_bingkai_png"]
+[ext_resource type="Texture2D" uid="uid://dapx056gq72b3" path="res://bingkai_powerup.png" id="9_bingkai_powerup_png"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwjjp"]
 bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.9882353)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_norob"]
-bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.9882353)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_powerup_frame"]
+texture = ExtResource("9_bingkai_powerup_png")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yla3h"]
-bg_color = Color(0.09411765, 0.09411765, 0.09411765, 0.9882353)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cell_frame"]
+texture = ExtResource("8_bingkai_png")
 
 [node name="GameScreen" type="Control"]
 layout_mode = 3
@@ -25,23 +28,24 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_t5odh")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.11372549, 0.11372549, 0.11372549, 1)
+texture = ExtResource("7_background_png")
+expand_mode = 5
 
 [node name="MainVBox" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
+offset_left = 20.0
 offset_top = 15.0
-offset_right = -10.0
+offset_right = -20.0
 offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -50,22 +54,27 @@ theme_override_constants/separation = 10
 [node name="Header" type="HBoxContainer" parent="MainVBox"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 
-[node name="PlayerX_Info" type="PanelContainer" parent="MainVBox/Header"]
+[node name="PlayerX_Info" type="TextureRect" parent="MainVBox/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="ColorRect" type="ColorRect" parent="MainVBox/Header/PlayerX_Info"]
-layout_mode = 2
-color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+texture = ExtResource("8_bingkai_png")
+expand_mode = 4
 
 [node name="VBox" type="VBoxContainer" parent="MainVBox/Header/PlayerX_Info"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -70
 
 [node name="PlayerX_Label" type="Label" parent="MainVBox/Header/PlayerX_Info/VBox"]
 layout_mode = 2
 size_flags_vertical = 6
-theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_colors/font_color = Color(0.98039216, 0.98039216, 0.98039216, 1)
 text = "PLAYER X"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -73,7 +82,7 @@ vertical_alignment = 1
 [node name="PlayerX_RP_Label" type="Label" parent="MainVBox/Header/PlayerX_Info/VBox"]
 layout_mode = 2
 size_flags_vertical = 6
-theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_colors/font_color = Color(0.98039216, 0.98039216, 0.98039216, 1)
 text = "RP: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -86,6 +95,7 @@ alignment = 1
 [node name="TurnIndicator" type="Label" parent="MainVBox/Header/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4627451, 0.2784314, 0.12156863, 1)
 text = "Giliran: X"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -94,21 +104,25 @@ vertical_alignment = 1
 layout_mode = 2
 text = "Info"
 
-[node name="PlayerO_Info" type="PanelContainer" parent="MainVBox/Header"]
+[node name="PlayerO_Info" type="TextureRect" parent="MainVBox/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="ColorRect" type="ColorRect" parent="MainVBox/Header/PlayerO_Info"]
-layout_mode = 2
-color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+texture = ExtResource("8_bingkai_png")
+expand_mode = 4
 
 [node name="VBox" type="VBoxContainer" parent="MainVBox/Header/PlayerO_Info"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -70
 
 [node name="PlayerO_Label" type="Label" parent="MainVBox/Header/PlayerO_Info/VBox"]
 layout_mode = 2
 size_flags_vertical = 6
-theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_colors/font_color = Color(0.98039216, 0.98039216, 0.98039216, 1)
 text = "PLAYER O"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -116,7 +130,7 @@ vertical_alignment = 1
 [node name="PlayerO_RP_Label" type="Label" parent="MainVBox/Header/PlayerO_Info/VBox"]
 layout_mode = 2
 size_flags_vertical = 6
-theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_colors/font_color = Color(0.98039216, 0.98039216, 0.98039216, 1)
 text = "RP: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -124,6 +138,7 @@ vertical_alignment = 1
 [node name="StatusLabel" type="Label" parent="MainVBox"]
 layout_mode = 2
 size_flags_vertical = 6
+theme_override_colors/font_color = Color(0.4627451, 0.28235295, 0.11764706, 1)
 text = "Mulai!"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -144,194 +159,224 @@ columns = 5
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_1" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_2" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_3" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_4" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_5" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_6" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_7" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_8" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_9" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_10" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_11" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_12" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_13" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_14" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_15" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_16" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_17" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_18" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_19" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_20" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_21" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_22" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_23" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
 [node name="Cell_0_24" type="Button" parent="MainVBox/BoardArea/GameBoard"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-theme_override_styles/normal = SubResource("StyleBoxFlat_xwjjp")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xwjjp")
+theme_override_styles/normal = SubResource("StyleBoxTexture_cell_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_cell_frame")
+expand_icon = true
 
-[node name="PowerUpBar" type="PanelContainer" parent="MainVBox"]
-custom_minimum_size = Vector2(0, 100)
+[node name="PowerUpBar" type="MarginContainer" parent="MainVBox"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="PowerUpGrid" type="GridContainer" parent="MainVBox/PowerUpBar"]
 layout_mode = 2
-theme_override_constants/h_separation = 5
+theme_override_constants/h_separation = -10
 theme_override_constants/v_separation = 5
 columns = 5
 
 [node name="PowerUp_Shield" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_norob")
+theme_override_styles/normal = SubResource("StyleBoxTexture_powerup_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_powerup_frame")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Shield"]
 layout_mode = 1
@@ -350,17 +395,20 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Shield/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_font_sizes/font_size = 14
 text = "Shield
 2RP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PowerUp_Erase" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_yla3h")
+theme_override_styles/normal = SubResource("StyleBoxTexture_powerup_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_powerup_frame")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Erase"]
 layout_mode = 1
@@ -379,17 +427,20 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Erase/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_font_sizes/font_size = 14
 text = "Erase
 2RP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PowerUp_Golden" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_yla3h")
+theme_override_styles/normal = SubResource("StyleBoxTexture_powerup_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_powerup_frame")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Golden"]
 layout_mode = 1
@@ -408,17 +459,20 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Golden/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_font_sizes/font_size = 14
 text = "Goldern
 4RP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PowerUp_Double" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_yla3h")
+theme_override_styles/normal = SubResource("StyleBoxTexture_powerup_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_powerup_frame")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Double"]
 layout_mode = 1
@@ -437,17 +491,20 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Double/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_font_sizes/font_size = 14
 text = "Double
 4RP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PowerUp_Swap" type="Button" parent="MainVBox/PowerUpBar/PowerUpGrid"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_yla3h")
+theme_override_styles/normal = SubResource("StyleBoxTexture_powerup_frame")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_powerup_frame")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Swap"]
 layout_mode = 1
@@ -466,6 +523,7 @@ stretch_mode = 5
 [node name="Label" type="Label" parent="MainVBox/PowerUpBar/PowerUpGrid/PowerUp_Swap/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9098039, 0.6862745, 0.27058825, 1)
+theme_override_font_sizes/font_size = 14
 text = "Swap
 6RP"
 horizontal_alignment = 1
