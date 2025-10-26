@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p scripts/core scripts/powerups scripts/ai scripts/ui scripts/utils scenes/main scenes/ui scenes/components assets/images assets/icons)",
+      "Bash(mv *.png assets/images/)",
+      "Bash(mv *.png.import assets/images/)",
+      "Bash(mv game_screen.tscn scenes/main/)",
+      "Bash(mv powerup_info_popup.tscn scenes/ui/)",
+      "Bash(find scripts/ -name \"*.gd\" -exec echo \"Checking: {}\" ; -exec head -n 5 {} ;)",
+      "Bash(find scripts/ -name \"*.gd\" -exec echo \"File: {}\" ; -exec head -n 3 {} ;)",
+      "Bash(git add .)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

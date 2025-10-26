@@ -1,0 +1,18 @@
+extends Panel
+
+func _ready():
+	# Ensure popup is on top
+	z_index = 100
+	visible = true
+
+	# Connect close button
+	if $VBoxContainer/CloseButton:
+		$VBoxContainer/CloseButton.pressed.connect(queue_free)
+
+	# Also close on escape key
+	set_process_input(true)
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			queue_free()

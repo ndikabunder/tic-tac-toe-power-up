@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://teskhakfelk0"
-path="res://.godot/imported/shield.png-bdf8e401b772eb7c90cb1fa4b7e06cd1.ctex"
+uid="uid://clvqpeimbs5ln"
+path="res://.godot/imported/bingkai_powerup.png-0f804ed22638faed478269fb1754d491.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://shield.png"
-dest_files=["res://.godot/imported/shield.png-bdf8e401b772eb7c90cb1fa4b7e06cd1.ctex"]
+source_file="res://assets/images/bingkai_powerup.png"
+dest_files=["res://.godot/imported/bingkai_powerup.png-0f804ed22638faed478269fb1754d491.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpsfyl7ejsx3v"
-path="res://.godot/imported/swap.png-2eb7a5fee9a62d8a0108845b1e703b2b.ctex"
+uid="uid://cgmc6uwykokim"
+path="res://.godot/imported/erase.png-23edd2a9270401f1efb0e82a74096742.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://swap.png"
-dest_files=["res://.godot/imported/swap.png-2eb7a5fee9a62d8a0108845b1e703b2b.ctex"]
+source_file="res://assets/images/erase.png"
+dest_files=["res://.godot/imported/erase.png-23edd2a9270401f1efb0e82a74096742.ctex"]
 
 [params]
 

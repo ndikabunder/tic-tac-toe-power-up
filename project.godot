@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TicTacToe PowerUp"
-run/main_scene="uid://cpowcuv1nhf3v"
+run/main_scene="uid://bvn8x2y5k9q3m"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 
 [display]

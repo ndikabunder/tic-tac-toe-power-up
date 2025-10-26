@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db7sfa6edx7hn"
-path="res://.godot/imported/perisai.png-c1ae139b8c8f84406cdf79d33a7503fe.ctex"
+uid="uid://bmd56jk0d312l"
+path="res://.godot/imported/bingkai.png-f48138fdf1d7beaf9a673a19a6813048.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://perisai.png"
-dest_files=["res://.godot/imported/perisai.png-c1ae139b8c8f84406cdf79d33a7503fe.ctex"]
+source_file="res://assets/images/bingkai.png"
+dest_files=["res://.godot/imported/bingkai.png-f48138fdf1d7beaf9a673a19a6813048.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmd56jk0d312l"
-path="res://.godot/imported/bingkai.png-7b032761b63b9e93015e13991bd6805c.ctex"
+uid="uid://de7jlut56fpmr"
+path="res://.godot/imported/background.png-e5ebdd33902457fb65ba6af20f80797b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://bingkai.png"
-dest_files=["res://.godot/imported/bingkai.png-7b032761b63b9e93015e13991bd6805c.ctex"]
+source_file="res://assets/images/background.png"
+dest_files=["res://.godot/imported/background.png-e5ebdd33902457fb65ba6af20f80797b.ctex"]
 
 [params]
 

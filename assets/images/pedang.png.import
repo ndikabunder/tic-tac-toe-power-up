@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgmc6uwykokim"
-path="res://.godot/imported/erase.png-26b6a54ad9439886b5135af4456e682e.ctex"
+uid="uid://dj1b7decvwrqy"
+path="res://.godot/imported/pedang.png-c86b4559297c1aa820cdd824bb544140.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://erase.png"
-dest_files=["res://.godot/imported/erase.png-26b6a54ad9439886b5135af4456e682e.ctex"]
+source_file="res://assets/images/pedang.png"
+dest_files=["res://.godot/imported/pedang.png-c86b4559297c1aa820cdd824bb544140.ctex"]
 
 [params]
 
